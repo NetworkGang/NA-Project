@@ -1,5 +1,6 @@
 from ndlib.models.DiffusionModel import DiffusionModel
 import future.utils
+import random
 
 __author__ = "Giulio Rossetti"
 __license__ = "BSD-2-Clause"
@@ -34,6 +35,12 @@ class CascadeModel(DiffusionModel):
                     "range": [0, 1],
                     "optional": True,
                     "default": 0.1
+                },
+                "recover_probability": {
+                    "descr": "Probability to recover",
+                    "range": [0, 1],
+                    "optional": True,
+                    "default": 0.1
                 }
             },
             "edges": {},
@@ -62,7 +69,11 @@ class CascadeModel(DiffusionModel):
                         "node_count": node_count.copy(), "status_delta": status_delta.copy()}
 
         for u in self.graph.nodes:
-            if actual_status[u] == 1 or actual_status[u] == 2:
+            if actual_status[u] == 1:
+                if random.random() <= self.params['nodes']['recover_probability'][u]:
+                    actual_status[u] = 2
+                continue
+            if actual_status[u] == 2:
                 continue
 
             neighbors = list(self.graph.neighbors(u))
@@ -77,6 +88,9 @@ class CascadeModel(DiffusionModel):
                 infected_ratio = float(infected)/len(neighbors)
                 if infected_ratio >= self.params['nodes']['threshold'][u]:
                     actual_status[u] = 1
+            if actual_status[u] == 1:
+                if random.random() <= self.params['nodes']['recover_probability'][u]:
+                    actual_status[u] = 2
 
         delta, node_count, status_delta = self.status_delta(actual_status)
         self.status = actual_status

@@ -51,8 +51,6 @@ class CascadeModel(DiffusionModel):
 
         actual_status = {node: nstatus for node, nstatus in future.utils.iteritems(self.status)}
 
-        print(actual_status)
-
         if self.actual_iteration == 0:
             self.actual_iteration += 1
             delta, node_count, status_delta = self.status_delta(actual_status)

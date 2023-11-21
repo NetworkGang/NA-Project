@@ -1,4 +1,4 @@
-from ndlib.models.DiffusionModel import DiffusionModel
+from .DiffusionModel import DiffusionModel
 import future.utils
 import random
 

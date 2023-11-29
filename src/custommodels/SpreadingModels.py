@@ -80,10 +80,11 @@ class ThresholdModel(SIRModelBase):
         self.susceptible = set(self.G.nodes) - self.infected
         self.recovered = set()
     
-    def set_parameters(self, theta: float, gamma: float):
+    def set_parameters(self, theta: float, beta: float, gamma: float):
         """Set the parameters of the model. Theta is the infection threshold, gamma is the recovery rate."""
         self.theta = theta
         self.gamma = gamma
+        self.beta = beta
     
     def _iterate(self):
         self.t += 1
@@ -115,4 +116,5 @@ class ThresholdModel(SIRModelBase):
         neighbors = set(self.G.neighbors(node))
         infected_neighbors = neighbors.intersection(self.infected)
         
-        return len(infected_neighbors) >= self.theta
+        if len(infected_neighbors) >= self.theta:
+            return random.random() < self.beta

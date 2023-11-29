@@ -7,7 +7,7 @@ class SIRModelBase:
         self.infected = set()
         self.susceptible = set(self.G.nodes)
         self.recovered = set()
-    
+
     def iterate(self, n: int):
         n = 1 if n is None else n
         results = []
@@ -18,20 +18,19 @@ class SIRModelBase:
             return results[0]
         else:
             return results
-    
+
     def try_recover(self, node):
         return random.random() < self.gamma
 
 class CascadeModel(SIRModelBase):
     def __init__(self, G) -> None:
         super().__init__(G)
-    
+
     def set_initial_infected(self, initial_infected: list):
         """Set the initial infected nodes. initial_infected is a list of node ids as STRINGS."""
-        self.infected = set(initial_infected)
-        self.susceptible = set(self.G.nodes) - self.infected
-        self.recovered = set()
-    
+        self.infected = self.infected.union(set(initial_infected))
+        self.susceptible = self.susceptible - self.infected
+
     def set_parameters(self, beta: float, gamma: float):
         """Set the parameters of the model. Beta is the infection rate, gamma is the recovery rate."""
         self.beta = beta
@@ -67,7 +66,7 @@ class CascadeModel(SIRModelBase):
         neighbors = set(self.G.neighbors(node))
         infected_neighbors = neighbors.intersection(self.infected)
         fraction = len(infected_neighbors) / len(neighbors)
-        
+
         return fraction >= self.beta
 
 class ThresholdModel(SIRModelBase):

@@ -117,3 +117,53 @@ class ThresholdModel(SIRModelBase):
         
         if len(infected_neighbors) >= self.theta:
             return random.random() < self.beta
+
+
+class ClassicalModel(SIRModelBase):
+    def __init__(self, G) -> None:
+        super().__init__(G)
+    
+    def set_initial_infected(self, initial_infected: list):
+        """Set the initial infected nodes. initial_infected is a list of node ids as STRINGS."""
+        self.infected = set(initial_infected)
+        self.susceptible = set(self.G.nodes) - self.infected
+        self.recovered = set()
+    
+    def set_parameters(self, theta: float, beta: float, gamma: float):
+        """Set the parameters of the model. Theta is the infection threshold, gamma is the recovery rate."""
+        self.theta = theta
+        self.gamma = gamma
+        self.beta = beta
+    
+    def _iterate(self):
+        self.t += 1
+        _newly_infected = set()
+        _newly_recovered = set()
+        for node in self.G.nodes:
+            if node in self.susceptible and self.try_infect(node):
+                _newly_infected.add(node)
+                continue
+
+            if node in self.infected and self.try_recover(node):
+                _newly_recovered.add(node)
+                continue
+
+            if node in self.recovered:
+                continue
+        new_suceptible = self.susceptible - _newly_infected
+        new_infected = self.infected.union(_newly_infected) - _newly_recovered
+        new_recovered = self.recovered.union(_newly_recovered)
+        state = {i: 0 for i in new_suceptible}
+        state.update({i: 1 for i in new_infected})
+        state.update({i: 2 for i in new_recovered})
+        self.susceptible = new_suceptible
+        self.infected = new_infected
+        self.recovered = new_recovered
+        return state, _newly_infected, _newly_recovered
+
+    def try_infect(self, node):
+        neighbors = set(self.G.neighbors(node))
+        infected_neighbors = neighbors.intersection(self.infected)
+        return random.random() < (1 - ((1 - self.beta)**len(infected_neighbors)) ) # sna p 253
+
+    

@@ -8,6 +8,8 @@ class SIRModelBase:
         self.susceptible = set(self.G.nodes)
         self.recovered = set()
 
+        self._node_datatype = list(G.nodes)[0].__class__
+
     def iterate(self, n: int):
         n = 1 if n is None else n
         results = []
@@ -21,15 +23,18 @@ class SIRModelBase:
 
     def try_recover(self, node):
         return random.random() < self.gamma
-
-class CascadeModel(SIRModelBase):
-    def __init__(self, G) -> None:
-        super().__init__(G)
-
+    
     def set_initial_infected(self, initial_infected: list):
         """Set the initial infected nodes. initial_infected is a list of node ids as STRINGS."""
         self.infected = self.infected.union(set(initial_infected))
         self.susceptible = self.susceptible - self.infected
+
+        if self._node_datatype != initial_infected[0].__class__:
+            print(f"WARNING: This model was created using a graph with nodes of type {self._node_datatype}, but the initial infected nodes are of type {initial_infected[0].__class__}. This may cause unexpected behaviour.")
+
+class CascadeModel(SIRModelBase):
+    def __init__(self, G) -> None:
+        super().__init__(G)
 
     def set_parameters(self, beta: float, gamma: float):
         """Set the parameters of the model. Beta is the infection rate, gamma is the recovery rate."""
@@ -72,12 +77,6 @@ class CascadeModel(SIRModelBase):
 class ThresholdModel(SIRModelBase):
     def __init__(self, G) -> None:
         super().__init__(G)
-    
-    def set_initial_infected(self, initial_infected: list):
-        """Set the initial infected nodes. initial_infected is a list of node ids as STRINGS."""
-        self.infected = set(initial_infected)
-        self.susceptible = set(self.G.nodes) - self.infected
-        self.recovered = set()
     
     def set_parameters(self, theta: float, beta: float, gamma: float):
         """Set the parameters of the model. Theta is the infection threshold, gamma is the recovery rate."""
@@ -122,12 +121,6 @@ class ThresholdModel(SIRModelBase):
 class ClassicalModel(SIRModelBase):
     def __init__(self, G) -> None:
         super().__init__(G)
-    
-    def set_initial_infected(self, initial_infected: list):
-        """Set the initial infected nodes. initial_infected is a list of node ids as STRINGS."""
-        self.infected = set(initial_infected)
-        self.susceptible = set(self.G.nodes) - self.infected
-        self.recovered = set()
     
     def set_parameters(self, theta: float, beta: float, gamma: float):
         """Set the parameters of the model. Theta is the infection threshold, gamma is the recovery rate."""

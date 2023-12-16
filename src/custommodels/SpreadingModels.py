@@ -28,9 +28,19 @@ class SIRModelBase:
         """Set the initial infected nodes. initial_infected is a list of node ids as STRINGS."""
         self.infected = self.infected.union(set(initial_infected))
         self.susceptible = self.susceptible - self.infected
+        self.recovered = self.recovered - self.infected
 
         if self._node_datatype != initial_infected[0].__class__:
             print(f"WARNING: This model was created using a graph with nodes of type {self._node_datatype}, but the initial infected nodes are of type {initial_infected[0].__class__}. This may cause unexpected behaviour.")
+
+    def set_initial_recovered(self, initial_recovered: list):
+        """Set the initial recovered nodes. initial_recovered is a list of node ids as STRINGS."""
+        self.recovered = self.recovered.union(set(initial_recovered))
+        self.susceptible = self.susceptible - self.recovered
+        self.infected = self.infected - self.recovered
+
+        if self._node_datatype != initial_recovered[0].__class__:
+            print(f"WARNING: This model was created using a graph with nodes of type {self._node_datatype}, but the initial recovered nodes are of type {initial_recovered[0].__class__}. This may cause unexpected behaviour.")
 
 class CascadeModel(SIRModelBase):
     def __init__(self, G) -> None:
@@ -79,7 +89,7 @@ class ThresholdModel(SIRModelBase):
         super().__init__(G)
     
     def set_parameters(self, theta: float, beta: float, gamma: float):
-        """Set the parameters of the model. Theta is the infection threshold, gamma is the recovery rate."""
+        """Set the parameters of the model. Theta is the infection threshold, gamma is the recovery rate. Beta is the infection rate"""
         self.theta = theta
         self.gamma = gamma
         self.beta = beta
@@ -122,9 +132,9 @@ class ClassicalModel(SIRModelBase):
     def __init__(self, G) -> None:
         super().__init__(G)
     
-    def set_parameters(self, theta: float, beta: float, gamma: float):
-        """Set the parameters of the model. Theta is the infection threshold, gamma is the recovery rate."""
-        self.theta = theta
+    def set_parameters(self, beta: float, gamma: float):
+        """Set the parameters of the model. gamma is the recovery rate, beta is the infection rate"""
+
         self.gamma = gamma
         self.beta = beta
     

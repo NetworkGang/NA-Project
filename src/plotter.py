@@ -171,7 +171,7 @@ def plot_models(initial_infected: list, initial_vaccinated: list, lineargs: list
         if rec_args:
             plt.plot(rec, **rec_args)
         print()
-    plt.legend()
+    plt.legend(loc = 'upper right')
     plt.xlabel("Time")
     plt.ylabel("Fraction of nodes")
     if title:
@@ -190,7 +190,7 @@ def getmodel():
     return mod
 #endregion
 
-skip = False
+skip = True
 #region Infected, top 10, random, bottom 10
 if not skip:
     top_10_deg, bot_10_deg = get_extreme_deg()
@@ -231,7 +231,7 @@ if not skip:
     )
 #endregion
 
-skip = True
+skip = True 
 #region Infected, disjoint top 10, random, disjoint bottom 10
 if not skip:
     top_n_deg, top_n_bet, bot_n_deg, bot_n_bet = disjoint_sets()
@@ -241,18 +241,18 @@ if not skip:
     deg_vacs = [None, None, None]
     deg_lineargs = [
         # susceptible line, infected line, recovered line
-        [None, {'label': 'Disjoint top 10 degree infected', 'color': '#94bc24'}, None], # top_n_deg
-        [None, {'label': 'Disjoint bottom 10 degree infected', 'color': '#6a8718'}, None], # bot_n_deg
-        [None, {'label': 'Random 10 infected', 'color': '#95fc2d'}, None] # rnd_10
+        [None, {'label': 'Disjoint top 10 degree infected', 'color': '#3b4b0e'}, None], # top_n_deg
+        [None, {'label': 'Disjoint bottom 10 degree infected', 'color': '#688419'}, None], # bot_n_deg
+        [None, {'label': 'Random 10 infected', 'color': '#a9c950'}, None] # rnd_10
     ]
 
     bet_infs = [top_n_bet, bot_n_bet, rnd_10]
     bet_vacs = [None, None, None]
     bet_lineargs = [
         # susceptible line, infected line, recovered line
-        [None, {'label': 'Disjoint top 10 betweenness infected', 'color': '#94bc24'}, None], # top_n_bet
-        [None, {'label': 'Disjoint bottom 10 betweenness infected', 'color': '#6a8718'}, None], # bot_n_bet
-        [None, {'label': 'Random 10 infected', 'color': '#95fc2d'}, None] # rnd_10
+        [None, {'label': 'Disjoint top 10 betweenness infected', 'color': '#3b4b0e'}, None], # top_n_bet
+        [None, {'label': 'Disjoint bottom 10 betweenness infected', 'color': '#688419'}, None], # bot_n_bet
+        [None, {'label': 'Random 10 infected', 'color': '#a9c950'}, None] # rnd_10
     ]
 
     print("Plotting degree models disjoint")
@@ -260,14 +260,14 @@ if not skip:
         deg_infs,
         deg_vacs,
         deg_lineargs,
-        title='Infection of disjoint top 10, disjoint bottom 10, and random 10 nodes by degree'
+        title = 'Infection by degree - disjoint'
     )
     print("Plotting betweenness models disjoint")
     plot_models(
         bet_infs,
         bet_vacs,
         bet_lineargs,
-        title='Infection of disjoint top 10, disjoint bottom 10, and random 10 nodes by betweenness'
+        title = 'Infection by betweenness - disjoint'
     )
 #endregion
 
@@ -298,33 +298,33 @@ if not skip:
     )
 #endregion
 
-skip = True
+skip = False 
 #region Immune disjoint
 if not skip:
     n_vax = 5000
     n_inf = 10
     rnd_n = get_random_for_infection(n_inf)
     rnd_n_vac = get_random_for_vaccine(n_vax)
-    top_n_deg, top_n_bet, bot_n_deg, bot_n_bet = disjoint_sets()
+    top_n_deg, top_n_bet, bot_n_deg, bot_n_bet = disjoint_sets(n_vax)
 
     infs = [rnd_n, rnd_n, rnd_n, rnd_n]
     vacs = [top_n_deg, top_n_bet, rnd_n_vac, None]
     lineargs = [
-        [None, {'label': f'Top {n_vax} degree vaxxd'}, None],
-        [None, {'label': f'Top {n_vax} betweenness vaxxd'}, None],
-        [None, {'label': f'Random {n_vax} vaxxd'}, None],
-        [None, {'label': f'No vaccination'}, None]
+        [None, {'label': f'Top {n_vax} degree vaxxd','color': '#a9c950'}, None],
+        [None, {'label': f'Top {n_vax} betweenness vaxxd','color': '#688419'}, None],
+        [None, {'label': f'Random {n_vax} vaxxd','color': '#5c7c34'}, None],
+        [None, {'label': f'No vaccination','color': '#243444'}, None]
     ]
     print("Plotting immune disjoint")
     plot_models(
         infs,
         vacs,
         lineargs,
-        title=f'{n_inf} infected, top {n_vax} vaxx\'d by degree, betweenness, and random, disjoint'
+        title=f'Immunity based on degree, betweenness, and random - disjoint'
     )
 #endregion
 
-skip = False
+skip = True 
 #region Immune joint
 if not skip:
     n_vax = 5000
@@ -348,7 +348,7 @@ if not skip:
         infs,
         vacs,
         lineargs,
-        title=f'{n_inf} infected, top {n_vax} vaxx\'d by degree, betweenness, and random, disjoint'
+        title=f'Immunity based on degree, betweenness, and random - disjoint'
     )
 #endregion
 

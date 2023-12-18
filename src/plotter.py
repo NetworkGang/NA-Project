@@ -298,7 +298,7 @@ if not skip:
     )
 #endregion
 
-skip = False 
+skip = True  
 #region Immune disjoint
 if not skip:
     n_vax = 5000
@@ -310,9 +310,9 @@ if not skip:
     infs = [rnd_n, rnd_n, rnd_n, rnd_n]
     vacs = [top_n_deg, top_n_bet, rnd_n_vac, None]
     lineargs = [
-        [None, {'label': f'Top {n_vax} degree vaxxd','color': '#a9c950'}, None],
-        [None, {'label': f'Top {n_vax} betweenness vaxxd','color': '#688419'}, None],
-        [None, {'label': f'Random {n_vax} vaxxd','color': '#5c7c34'}, None],
+        [None, {'label': f'Top {n_vax} degree','color': '#94bc24'}, None],
+        [None, {'label': f'Top {n_vax} betweenness','color': '#688419'}, None],
+        [None, {'label': f'Random {n_vax}','color': '#cade92'}, None],
         [None, {'label': f'No vaccination','color': '#243444'}, None]
     ]
     print("Plotting immune disjoint")
@@ -324,7 +324,7 @@ if not skip:
     )
 #endregion
 
-skip = True 
+skip = True   
 #region Immune joint
 if not skip:
     n_vax = 5000
@@ -332,23 +332,23 @@ if not skip:
     rnd_n = get_random_for_infection(n_inf)
     rnd_n_vac = get_random_for_vaccine(n_vax)
     top, bot = undisjoint(n_vax)
-    top_n_deg, top_n_bet, bot_n_deg, bot_n_bet = disjoint_sets()
+    top_n_deg, top_n_bet, bot_n_deg, bot_n_bet = disjoint_sets(n_vax)
 
     infs = [rnd_n, rnd_n, rnd_n, rnd_n, rnd_n]
     vacs = [top, rnd_n_vac, top_n_deg, top_n_bet, None]
     lineargs = [
-        [None, {'label': f'Top {n_vax} joint vaxxd'}, None],
-        [None, {'label': f'Random {n_vax} vaxxd'}, None],
-        [None, {'label': f'Top {n_vax} degree vaxxd'}, None],
-        [None, {'label': f'Top {n_vax} betweenness vaxxd'}, None],
-        [None, {'label': f'No vaccination'}, None]
+        [None, {'label': f'Top {n_vax} joint', 'color': '#2494bc'}, None],
+        [None, {'label': f'Random {n_vax}','color': '#cade92'}, None],
+        [None, {'label': f'Top {n_vax} degree','color': '#94bc24'}, None],
+        [None, {'label': f'Top {n_vax} betweenness','color': '#688419'}, None],
+        [None, {'label': f'No vaccination','color': '#243444'}, None]
     ]
     print("Plotting immune disjoint")
     plot_models(
         infs,
         vacs,
         lineargs,
-        title=f'Immunity based on degree, betweenness, and random - disjoint'
+        title=f'Immunity based on degree, betweenness, joint and random - disjoint'
     )
 #endregion
 
@@ -385,7 +385,7 @@ if not skip:
     )
 #endregion
 
-skip = True
+skip = False
 #region Immune test from 5000
 if not skip:
     n_inf = 10
@@ -394,7 +394,7 @@ if not skip:
     lineargs = []
 
     vax_values = (5000, 1000, 100)
-    colors = ('orangered', 'mediumturquoise', 'violet')
+    colors = ('#2494bc', '#94bc24', '#688419')
     for n_vax, color in zip(vax_values, colors):
         rnd_n = get_random_for_infection(n_inf)
         rnd_n_vac = get_random_for_vaccine(n_vax)

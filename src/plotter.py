@@ -299,15 +299,15 @@ if not skip:
 #endregion
 
 skip = False
-#region Immune test from 500
+#region Immune test from 5000
 if not skip:
     n_inf = 10
     infs = []
     vacs = []
     lineargs = []
 
-    vax_values = (5000, 1000, 500, 100)
-    colors = ('orangered', 'gold', 'mediumturquoise', 'violet')
+    vax_values = (5000, 1000, 100)
+    colors = ('orangered', 'mediumturquoise', 'violet')
     for n_vax, color in zip(vax_values, colors):
         rnd_n = get_random_for_infection(n_inf)
         rnd_n_vac = get_random_for_vaccine(n_vax)
@@ -327,6 +327,37 @@ if not skip:
         infs,
         vacs,
         lineargs,
-        title=f'Vaccinating top nodes with n = {n_vax}'
+        title=f'Vaccinating top nodes with n = {vax_values}, both between and degree'
+    )
+#endregion
+
+skip = False
+#region Immune test from 5000
+if not skip:
+    n_inf = 10
+    infs = []
+    vacs = []
+    lineargs = []
+
+    vax_values = (5000, 1000, 100)
+    colors = ('orangered', 'mediumturquoise', 'violet')
+    for n_vax, color in zip(vax_values, colors):
+        rnd_n = get_random_for_infection(n_inf)
+        rnd_n_vac = get_random_for_vaccine(n_vax)
+        top, bot = undisjoint(n_vax)
+
+        infs = infs + [rnd_n, rnd_n]
+        vacs = vacs + [top, rnd_n_vac]
+
+        lineargs = lineargs + [
+            [None, {'label': f'Top {n_vax} combined vaxxd', 'color': color}, None],
+            [None, {'label': f'Random {n_vax} vaxxd', 'color': color, 'linestyle': 'dotted'}, None]
+        ]
+    print("Plotting immune undisjoint with vax")
+    plot_models(
+        infs,
+        vacs,
+        lineargs,
+        title=f'Vaccinating top nodes with n = {vax_values}, combined between and degree'
     )
 #endregion

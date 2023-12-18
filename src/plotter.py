@@ -271,10 +271,10 @@ if not skip:
     )
 #endregion
 
-skip = True
-#region Immune not disjoint
+skip = False
+#region Immune normal
 if not skip:
-    n_vax = 1000
+    n_vax = 5000
     n_inf = 10
     rnd_n = get_random_for_infection(n_inf)
     rnd_n_vac = get_random_for_vaccine(n_vax)
@@ -289,16 +289,42 @@ if not skip:
         [None, {'label': f'Random {n_vax} vaxxd'}, None],
         [None, {'label': f'No vaccination'}, None]
     ]
-    print("Plotting immune not disjoint")
+    print("Plotting immune normal")
     plot_models(
         infs,
         vacs,
         lineargs,
-        title=f'Infection of {n_inf} random nodes and vaccination of top {n_vax} nodes by degree, betweenness, and random'
+        title=f'{n_inf} infected, top {n_vax} vaxx\'d by degree, betweenness, and random'
     )
 #endregion
 
 skip = False
+#region Immune disjoint
+if not skip:
+    n_vax = 5000
+    n_inf = 10
+    rnd_n = get_random_for_infection(n_inf)
+    rnd_n_vac = get_random_for_vaccine(n_vax)
+    top_n_deg, top_n_bet, bot_n_deg, bot_n_bet = disjoint_sets()
+
+    infs = [rnd_n, rnd_n, rnd_n, rnd_n]
+    vacs = [top_n_deg, top_n_bet, rnd_n_vac, None]
+    lineargs = [
+        [None, {'label': f'Top {n_vax} degree vaxxd'}, None],
+        [None, {'label': f'Top {n_vax} betweenness vaxxd'}, None],
+        [None, {'label': f'Random {n_vax} vaxxd'}, None],
+        [None, {'label': f'No vaccination'}, None]
+    ]
+    print("Plotting immune disjoint")
+    plot_models(
+        infs,
+        vacs,
+        lineargs,
+        title=f'{n_inf} infected, top {n_vax} vaxx\'d by degree, betweenness, and random, disjoint'
+    )
+#endregion
+
+skip = True
 #region Immune test from 5000
 if not skip:
     n_inf = 10
@@ -331,7 +357,7 @@ if not skip:
     )
 #endregion
 
-skip = False
+skip = True
 #region Immune test from 5000
 if not skip:
     n_inf = 10

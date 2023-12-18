@@ -177,7 +177,7 @@ def plot_models(initial_infected: list, initial_vaccinated: list, lineargs: list
     if title:
         plt.title(title)
     # save to file
-    plt.savefig(f"./data/plots/{title}.png")
+    plt.savefig(f"./data/plots/{title}.svg", format="svg")
     if show:
         plt.show()
     plt.clf()
@@ -271,7 +271,7 @@ if not skip:
     )
 #endregion
 
-skip = False
+skip = True
 #region Immune normal
 if not skip:
     n_vax = 5000
@@ -298,7 +298,7 @@ if not skip:
     )
 #endregion
 
-skip = False
+skip = True
 #region Immune disjoint
 if not skip:
     n_vax = 5000
@@ -312,6 +312,32 @@ if not skip:
     lineargs = [
         [None, {'label': f'Top {n_vax} degree vaxxd'}, None],
         [None, {'label': f'Top {n_vax} betweenness vaxxd'}, None],
+        [None, {'label': f'Random {n_vax} vaxxd'}, None],
+        [None, {'label': f'No vaccination'}, None]
+    ]
+    print("Plotting immune disjoint")
+    plot_models(
+        infs,
+        vacs,
+        lineargs,
+        title=f'{n_inf} infected, top {n_vax} vaxx\'d by degree, betweenness, and random, disjoint'
+    )
+#endregion
+
+skip = False
+#region Immune joint
+if not skip:
+    n_vax = 5000
+    n_inf = 10
+    rnd_n = get_random_for_infection(n_inf)
+    rnd_n_vac = get_random_for_vaccine(n_vax)
+    top, bot = undisjoint(n_vax)
+    disjoint
+
+    infs = [rnd_n, rnd_n, rnd_n]
+    vacs = [top, rnd_n_vac, None]
+    lineargs = [
+        [None, {'label': f'Top {n_vax} joint vaxxd'}, None],
         [None, {'label': f'Random {n_vax} vaxxd'}, None],
         [None, {'label': f'No vaccination'}, None]
     ]

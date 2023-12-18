@@ -332,13 +332,15 @@ if not skip:
     rnd_n = get_random_for_infection(n_inf)
     rnd_n_vac = get_random_for_vaccine(n_vax)
     top, bot = undisjoint(n_vax)
-    disjoint
+    top_n_deg, top_n_bet, bot_n_deg, bot_n_bet = disjoint_sets()
 
-    infs = [rnd_n, rnd_n, rnd_n]
-    vacs = [top, rnd_n_vac, None]
+    infs = [rnd_n, rnd_n, rnd_n, rnd_n, rnd_n]
+    vacs = [top, rnd_n_vac, top_n_deg, top_n_bet, None]
     lineargs = [
         [None, {'label': f'Top {n_vax} joint vaxxd'}, None],
         [None, {'label': f'Random {n_vax} vaxxd'}, None],
+        [None, {'label': f'Top {n_vax} degree vaxxd'}, None],
+        [None, {'label': f'Top {n_vax} betweenness vaxxd'}, None],
         [None, {'label': f'No vaccination'}, None]
     ]
     print("Plotting immune disjoint")

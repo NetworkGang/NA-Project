@@ -190,7 +190,7 @@ def getmodel():
     return mod
 #endregion
 
-skip = True
+skip = False
 #region Infected, top 10, random, bottom 10
 if not skip:
     top_10_deg, bot_10_deg = get_extreme_deg()
@@ -201,18 +201,18 @@ if not skip:
     deg_vacs = [None, None, None]
     deg_lineargs = [
         # susceptible line, infected line, recovered line
-        [None, {'label': 'Top 10 degree infected', 'color': '#94bc24'}, None], # top_10_deg
-        [None, {'label': 'Bottom 10 degree infected', 'color': '#6a8718'}, None], # bot_10_deg
-        [None, {'label': 'Random 10 infected', 'color': '#95fc2d'}, None] # rnd_10
+        [None, {'label': 'Top 10 degree infected', 'color': '#3b4b0e'}, None], # top_10_deg
+        [None, {'label': 'Bottom 10 degree infected', 'color': '#688419'}, None], # bot_10_deg
+        [None, {'label': 'Random 10 infected', 'color': '#a9c950'}, None] # rnd_10
     ]
 
     bet_infs = [top_10_bet, bot_10_bet, rnd_10]
     bet_vacs = [None, None, None]
     bet_lineargs = [
         # susceptible line, infected line, recovered line
-        [None, {'label': 'Top 10 betweenness infected', 'color': '#94bc24'}, None], # top_10_bet
-        [None, {'label': 'Bottom 10 betweenness infected', 'color': '#6a8718'}, None], # bot_10_bet
-        [None, {'label': 'Random 10 infected', 'color': '#95fc2d'}, None] # rnd_10
+        [None, {'label': 'Top 10 betweenness infected', 'color': '#3b4b0e'}, None], # top_10_bet
+        [None, {'label': 'Bottom 10 betweenness infected', 'color': '#688419'}, None], # bot_10_bet
+        [None, {'label': 'Random 10 infected', 'color': '#a9c950'}, None] # rnd_10
     ]
 
     print("Plotting degree models")
@@ -271,7 +271,7 @@ if not skip:
     )
 #endregion
 
-skip = False
+skip = True
 #region Immune normal
 if not skip:
     n_vax = 5000
@@ -298,7 +298,7 @@ if not skip:
     )
 #endregion
 
-skip = False
+skip = True
 #region Immune disjoint
 if not skip:
     n_vax = 5000

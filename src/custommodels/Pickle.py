@@ -26,9 +26,9 @@ def pickle(function, silent = False):
             pkl.dump(data, f)
     return data
 
-def load(name, silent = False):
+def load(name, silent = False, relative_path = True):
     """Load data from picklejar"""
-    location = '../data/picklejar/' + name + '.pkl'
+    location = ('../data/picklejar/' if relative_path else 'data/picklejar/') + name + '.pkl'
     if os.path.isfile(location):
         if not silent:
             print("Found data, loading from picklejar")

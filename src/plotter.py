@@ -422,7 +422,7 @@ if not skip:
     n_vax = 5000
     n_inf = 10
     rnd_n = get_random_for_infection(n_inf)
-    top_n_deg, top_n_bet, bot_n_deg, bot_n_bet = disjoint_sets()
+    top_n_deg, top_n_bet, bot_n_deg, bot_n_bet = disjoint_sets(n_vax)
 
     infs_deg = [rnd_n]
     infs_bet = [rnd_n]

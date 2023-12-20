@@ -5,6 +5,7 @@ import random
 from custommodels.SpreadingModels import SIRModelBase, ClassicalModel
 from custommodels.Pickle import pickle, load
 from copy import deepcopy
+from os import path
 
 #region load graph
 path = "./data/loc-brightkite_edges.txt.gz"
@@ -177,7 +178,7 @@ def plot_models(initial_infected: list, initial_vaccinated: list, lineargs: list
     if title:
         plt.title(title)
     # save to file
-    plt.savefig(f"./data/plots/{title}.svg", format="svg")
+    plt.savefig(path.join(".", "data", "plots", f"{title}.svg"), format="svg")
     if show:
         plt.show()
     plt.clf()

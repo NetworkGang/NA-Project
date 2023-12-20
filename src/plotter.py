@@ -417,7 +417,7 @@ if not skip:
     )
 #endregion
 
-skip = False
+skip = False 
 #region degree and betweenness, all lines, 5k vax, 10 infected
 if not skip:
     n_vax = 5000
@@ -431,9 +431,9 @@ if not skip:
     vacs_bet = [top_n_bet]
     lineargs = [
         [
-            { 'label': f'Susceptible' },
-            { 'label': f'Infected' },
-            { 'label': f'Recovered' }
+            { 'label': f'Susceptible' , 'color' : '#223747'},
+            { 'label': f'Infected' , 'color': '#94bc24'},
+            { 'label': f'Recovered' , 'color': '#748088'}
         ]
     ]
 
@@ -442,13 +442,41 @@ if not skip:
         infs_deg,
         vacs_deg,
         lineargs,
-        title=f'Infection by degree - disjoint'
+        title=f'Vaccinating by degree - disjoint'
     )
     print("Plotting betweenness")
     plot_models(
         infs_bet,
         vacs_bet,
         lineargs,
-        title=f'Infection by betweenness - disjoint'
+        title=f'Vaccinating by betweenness - disjoint'
+    )
+#endregion
+
+skip = True 
+#region joint degree and betweenness, all lines, 5k vax, 10 infected
+if not skip:
+    n_vax = 5000
+    n_inf = 10
+    rnd_n = get_random_for_infection(n_inf)
+    top_deg_bet, bot_deg_bet = undisjoint(n_vax)
+
+    infs_deg = [rnd_n]
+    infs_bet = [rnd_n]
+    vacs_deg_bet = [top_deg_bet]
+    lineargs = [
+        [
+            { 'label': f'Susceptible' },
+            { 'label': f'Infected' },
+            { 'label': f'Recovered' }
+        ]
+    ]
+
+    print("Plotting degree betweeness")
+    plot_models(
+        infs_deg,
+        vacs_deg,
+        lineargs,
+        title=f'Infection by degree - disjoint'
     )
 #endregion

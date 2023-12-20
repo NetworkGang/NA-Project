@@ -5,10 +5,11 @@ import random
 from custommodels.SpreadingModels import SIRModelBase, ClassicalModel
 from custommodels.Pickle import pickle, load
 from copy import deepcopy
+from os import path
 
 #region load graph
-path = "./data/loc-brightkite_edges.txt.gz"
-G = nx.read_edgelist(path, create_using=nx.Graph())
+datapath = "./data/loc-brightkite_edges.txt.gz"
+G = nx.read_edgelist(datapath, create_using=nx.Graph())
 largest_cc = max(nx.connected_components(G), key=len)
 len(largest_cc)
 G = G.subgraph(largest_cc)
@@ -177,7 +178,7 @@ def plot_models(initial_infected: list, initial_vaccinated: list, lineargs: list
     if title:
         plt.title(title)
     # save to file
-    plt.savefig(f"./data/plots/{title}.svg", format="svg")
+    plt.savefig(path.join(".", "data", "plots", f"{title}.svg"), format="svg")
     if show:
         plt.show()
     plt.clf()
@@ -385,7 +386,7 @@ if not skip:
     )
 #endregion
 
-skip = False
+skip = True
 #region Immune test from 5000
 if not skip:
     n_inf = 10
@@ -413,5 +414,69 @@ if not skip:
         vacs,
         lineargs,
         title=f'Vaccinating top nodes with n = {vax_values}, combined between and degree'
+    )
+#endregion
+
+skip = False 
+#region degree and betweenness, all lines, 5k vax, 10 infected
+if not skip:
+    n_vax = 5000
+    n_inf = 10
+    rnd_n = get_random_for_infection(n_inf)
+    top_n_deg, top_n_bet, bot_n_deg, bot_n_bet = disjoint_sets(n_vax)
+
+    infs_deg = [rnd_n]
+    infs_bet = [rnd_n]
+    vacs_deg = [top_n_deg]
+    vacs_bet = [top_n_bet]
+    lineargs = [
+        [
+            { 'label': f'Susceptible' , 'color' : '#223747'},
+            { 'label': f'Infected' , 'color': '#94bc24'},
+            { 'label': f'Recovered' , 'color': '#748088'}
+        ]
+    ]
+
+    print("Plotting degree")
+    plot_models(
+        infs_deg,
+        vacs_deg,
+        lineargs,
+        title=f'Vaccinating by degree - disjoint'
+    )
+    print("Plotting betweenness")
+    plot_models(
+        infs_bet,
+        vacs_bet,
+        lineargs,
+        title=f'Vaccinating by betweenness - disjoint'
+    )
+#endregion
+
+skip = True 
+#region joint degree and betweenness, all lines, 5k vax, 10 infected
+if not skip:
+    n_vax = 5000
+    n_inf = 10
+    rnd_n = get_random_for_infection(n_inf)
+    top_deg_bet, bot_deg_bet = undisjoint(n_vax)
+
+    infs_deg = [rnd_n]
+    infs_bet = [rnd_n]
+    vacs_deg_bet = [top_deg_bet]
+    lineargs = [
+        [
+            { 'label': f'Susceptible' },
+            { 'label': f'Infected' },
+            { 'label': f'Recovered' }
+        ]
+    ]
+
+    print("Plotting degree betweeness")
+    plot_models(
+        infs_deg,
+        vacs_deg,
+        lineargs,
+        title=f'Infection by degree - disjoint'
     )
 #endregion

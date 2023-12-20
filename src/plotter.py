@@ -8,8 +8,8 @@ from copy import deepcopy
 from os import path
 
 #region load graph
-path = "./data/loc-brightkite_edges.txt.gz"
-G = nx.read_edgelist(path, create_using=nx.Graph())
+datapath = "./data/loc-brightkite_edges.txt.gz"
+G = nx.read_edgelist(datapath, create_using=nx.Graph())
 largest_cc = max(nx.connected_components(G), key=len)
 len(largest_cc)
 G = G.subgraph(largest_cc)

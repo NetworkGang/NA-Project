@@ -385,7 +385,7 @@ if not skip:
     )
 #endregion
 
-skip = False
+skip = True
 #region Immune test from 5000
 if not skip:
     n_inf = 10
@@ -413,5 +413,41 @@ if not skip:
         vacs,
         lineargs,
         title=f'Vaccinating top nodes with n = {vax_values}, combined between and degree'
+    )
+#endregion
+
+skip = False
+#region degree and betweenness, all lines, 5k vax, 10 infected
+if not skip:
+    n_vax = 5000
+    n_inf = 10
+    rnd_n = get_random_for_infection(n_inf)
+    top_n_deg, top_n_bet, bot_n_deg, bot_n_bet = disjoint_sets()
+
+    infs_deg = [rnd_n]
+    infs_bet = [rnd_n]
+    vacs_deg = [top_n_deg]
+    vacs_bet = [top_n_bet]
+    lineargs = [
+        [
+            { 'label': f'Susceptible' },
+            { 'label': f'Infected' },
+            { 'label': f'Recovered' }
+        ]
+    ]
+
+    print("Plotting degree")
+    plot_models(
+        infs_deg,
+        vacs_deg,
+        lineargs,
+        title=f'Infection by degree - disjoint'
+    )
+    print("Plotting betweenness")
+    plot_models(
+        infs_bet,
+        vacs_bet,
+        lineargs,
+        title=f'Infection by betweenness - disjoint'
     )
 #endregion
